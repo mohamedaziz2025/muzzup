@@ -70,8 +70,8 @@ export default function DashboardPage() {
     if (isHydrated && !user) router.push("/connexion");
   }, [isHydrated, user, router]);
 
-  const isSeller = user?.capacities.includes("seller");
-  const { data: listingsData } = useMyListings();
+  const isSeller = !!user?.capacities.includes("seller");
+  const { data: listingsData } = useMyListings(isSeller);
   const { data: notificationsData } = useNotifications();
   const { data: favoriteIdsData } = useFavoriteIds();
   const { data: dealsData } = useMyDeals();

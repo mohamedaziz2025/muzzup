@@ -34,10 +34,11 @@ export function useListing(id: string) {
   });
 }
 
-export function useMyListings() {
+export function useMyListings(enabled = true) {
   return useQuery({
     queryKey: ["listings", "mine"],
     queryFn: () => apiFetch<{ listings: ListingDetail[] }>("/listings/mine"),
+    enabled,
   });
 }
 
