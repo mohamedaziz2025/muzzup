@@ -12,7 +12,7 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN pnpm --filter @muzzap/web build
+RUN pnpm exec turbo run build --filter=@muzzap/web
 
 EXPOSE 3000
 
