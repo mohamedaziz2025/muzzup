@@ -1,0 +1,252 @@
+@import "tailwindcss";
+
+/* Palette claire (défaut, façon acquire.com) */
+:root,
+:root[data-theme="light"] {
+  /* Fonds */
+  --bg-abyss: #f6f7fb;
+  --bg-night: #eef1f8;
+  --bg-surface: #ffffff;
+  --bg-elevated: #eef2ff;
+
+  /* Accents */
+  --accent-royal: #2952d6;
+  --accent-cyan: #0891b2;
+  --accent-gold: #a9761f;
+
+  /* Sémantique */
+  --success: #15803d;
+  --warning: #b45309;
+  --danger: #dc2626;
+
+  /* Texte */
+  --text-primary: #10162c;
+  --text-secondary: #4b5677;
+  --text-muted: #8791b3;
+
+  /* Effets */
+  --glow-royal: 0 0 24px rgba(41, 82, 214, 0.18);
+  --glow-gold: 0 0 20px rgba(169, 118, 31, 0.16);
+  --glass: rgba(255, 255, 255, 0.7);
+  --border-subtle: rgba(16, 22, 44, 0.1);
+  --radius: 14px;
+  --radius-lg: 20px;
+
+  --header-shadow: 0 1px 0 rgba(16, 22, 44, 0.06);
+  --aurora-glow-1: rgba(41, 82, 214, 0.14);
+  --aurora-glow-2: rgba(8, 145, 178, 0.12);
+  --aurora-glow-3: rgba(169, 118, 31, 0.12);
+  --aurora-vignette: rgba(246, 247, 251, 0.9);
+
+  /* Fixed near-white foreground for text sitting on solid saturated accent backgrounds
+     (buttons, step indicators) — text-primary flips too dark on those in the light theme. */
+  --text-on-accent: #f7f9ff;
+
+  --shadow-card: 0 1px 2px rgba(16, 22, 44, 0.04), 0 16px 32px -12px rgba(16, 22, 44, 0.12);
+}
+
+/* Palette sombre ("Midnight Trust"), activée via [data-theme="dark"] */
+:root[data-theme="dark"] {
+  --bg-abyss: #050a1e;
+  --bg-night: #0a1230;
+  --bg-surface: #101b3f;
+  --bg-elevated: #18265c;
+
+  --accent-royal: #3b6cff;
+  --accent-cyan: #22d3ee;
+  --accent-gold: #d4a853;
+
+  --success: #34d399;
+  --warning: #fbbf24;
+  --danger: #f87171;
+
+  --text-primary: #edf1ff;
+  --text-secondary: #9fb0d9;
+  --text-muted: #5c6b99;
+
+  --glow-royal: 0 0 24px rgba(59, 108, 255, 0.35);
+  --glow-gold: 0 0 20px rgba(212, 168, 83, 0.3);
+  --glass: rgba(16, 27, 63, 0.55);
+  --border-subtle: rgba(159, 176, 217, 0.12);
+  --radius: 14px;
+  --radius-lg: 20px;
+
+  --header-shadow: 0 1px 0 rgba(59, 108, 255, 0.08);
+  --aurora-glow-1: rgba(59, 108, 255, 0.28);
+  --aurora-glow-2: rgba(34, 211, 238, 0.22);
+  --aurora-glow-3: rgba(212, 168, 83, 0.18);
+  --aurora-vignette: rgba(10, 18, 48, 0.9);
+
+  --text-on-accent: #f7f9ff;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.2), 0 16px 32px -12px rgba(0, 0, 0, 0.45);
+}
+
+/**
+ * Fixed dark band, independent of the light/dark toggle — like acquire.com's permanently dark
+ * hero/footer over an otherwise light site. Scoped (not :root) so it cascades to any subtree.
+ */
+.theme-dark-fixed {
+  --bg-abyss: #050a1e;
+  --bg-night: #0a1230;
+  --bg-surface: #101b3f;
+  --bg-elevated: #18265c;
+
+  --accent-royal: #3b6cff;
+  --accent-cyan: #22d3ee;
+  --accent-gold: #d4a853;
+
+  --success: #34d399;
+  --warning: #fbbf24;
+  --danger: #f87171;
+
+  --text-primary: #edf1ff;
+  --text-secondary: #9fb0d9;
+  --text-muted: #5c6b99;
+
+  --glow-royal: 0 0 24px rgba(59, 108, 255, 0.35);
+  --glow-gold: 0 0 20px rgba(212, 168, 83, 0.3);
+  --glass: rgba(16, 27, 63, 0.55);
+  --border-subtle: rgba(159, 176, 217, 0.12);
+
+  --header-shadow: 0 1px 0 rgba(59, 108, 255, 0.08);
+  --aurora-glow-1: rgba(59, 108, 255, 0.28);
+  --aurora-glow-2: rgba(34, 211, 238, 0.22);
+  --aurora-glow-3: rgba(212, 168, 83, 0.18);
+  --aurora-vignette: rgba(10, 18, 48, 0.9);
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.2), 0 16px 32px -12px rgba(0, 0, 0, 0.45);
+
+  color-scheme: dark;
+  background-color: var(--bg-abyss);
+  color: var(--text-primary);
+}
+
+@theme inline {
+  --color-abyss: var(--bg-abyss);
+  --color-night: var(--bg-night);
+  --color-surface: var(--bg-surface);
+  --color-elevated: var(--bg-elevated);
+
+  --color-royal: var(--accent-royal);
+  --color-cyan: var(--accent-cyan);
+  --color-gold: var(--accent-gold);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+  --color-on-accent: var(--text-on-accent);
+
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius-lg);
+
+  --font-display: var(--font-geist), "Geist", sans-serif;
+  --font-body: var(--font-geist), "Geist", sans-serif;
+  --font-mono: var(--font-geist-mono), "Geist Mono", monospace;
+  --font-logo: var(--font-baloo), "Baloo 2", cursive;
+}
+
+@layer base {
+  * {
+    border-color: var(--border-subtle);
+  }
+
+  html {
+    color-scheme: light dark;
+  }
+
+  html[data-theme="dark"] {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--bg-abyss);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    transition:
+      background-color 200ms ease-out,
+      color 200ms ease-out;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+
+  ::selection {
+    background: var(--accent-royal);
+    color: var(--bg-abyss);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: var(--glass);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border-subtle);
+  }
+
+  .glow-royal-hover {
+    transition: box-shadow 200ms ease-out;
+  }
+  .glow-royal-hover:hover {
+    box-shadow: var(--glow-royal);
+  }
+
+  .glow-gold {
+    box-shadow: var(--glow-gold);
+  }
+
+  .financial-blur {
+    filter: blur(8px);
+    user-select: none;
+  }
+
+  .card-shadow {
+    box-shadow: var(--shadow-card);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes shimmer-once {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-once {
+  background-image: linear-gradient(
+    110deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 60%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-once 1.4s ease-out 1;
+}

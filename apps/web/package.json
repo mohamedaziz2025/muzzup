@@ -1,0 +1,46 @@
+{
+  "name": "@muzzap/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "dependencies": {
+    "@muzzap/shared": "workspace:*",
+    "@tanstack/react-query": "^5.62.11",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.15.0",
+    "gsap": "^3.12.7",
+    "lottie-react": "^2.4.1",
+    "lucide-react": "^0.469.0",
+    "next": "^15.1.3",
+    "next-intl": "^3.26.3",
+    "react": "^19.0.0",
+    "socket.io-client": "^4.8.1",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^2.6.0",
+    "zustand": "^5.0.2"
+  },
+  "devDependencies": {
+    "@next/eslint-plugin-next": "^15.1.3",
+    "@storybook/addon-a11y": "^8.4.7",
+    "@storybook/addon-essentials": "^8.4.7",
+    "@storybook/nextjs": "^8.4.7",
+    "@storybook/react": "^8.4.7",
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "eslint-config-next": "^15.1.3",
+    "storybook": "^8.4.7",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.2"
+  }
+}

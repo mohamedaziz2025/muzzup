@@ -1,0 +1,46 @@
+{
+  "nav": {
+    "buy": "Acheter",
+    "finance": "Financer",
+    "invest": "Entrer au capital",
+    "providers": "Prestataires",
+    "pricing": "Abonnement",
+    "login": "Connexion",
+    "register": "Créer un compte",
+    "dashboard": "Tableau de bord",
+    "designSystem": "Design system"
+  },
+  "home": {
+    "heroEyebrow": "MUZZUP",
+    "heroTitle": "Marketplace de cession de business 100% Halal",
+    "heroTagline": "Vérifié selon les principes de la Sharia",
+    "heroSubtitle": "Boutiques Amazon FBA, Shopify, SaaS et sites de contenu, audités par des humains selon des critères Sharia stricts. L'IA prépare, nos experts valident.",
+    "ctaPrimary": "Estimer mon business",
+    "ctaSecondary": "Explorer les annonces",
+    "trustBadge": "Sharia Vérifié",
+    "spaces": {
+      "buy": { "title": "Acheter", "description": "Trouvez un business rentable, audité et prêt à reprendre." },
+      "finance": { "title": "Financer", "description": "Structurez une acquisition sans recourir à des montages non conformes." },
+      "invest": { "title": "Entrer au capital", "description": "Prenez une participation dans un business en croissance." }
+    }
+  },
+  "designSystem": {
+    "title": "Design system — Midnight Trust",
+    "subtitle": "Composants, tokens et signature visuelle de la plateforme MUZZUP.",
+    "sections": {
+      "colors": "Palette",
+      "typography": "Typographie",
+      "buttons": "Boutons",
+      "badges": "Badges",
+      "cards": "Cartes & glassmorphism",
+      "financials": "Données financières verrouillées",
+      "forms": "Champs de formulaire",
+      "motion": "Animation",
+      "theme": "Thème clair / sombre"
+    }
+  },
+  "footer": {
+    "tagline": "La confiance est le produit.",
+    "rights": "Tous droits réservés."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "nav": {
+    "buy": "Buy",
+    "finance": "Finance",
+    "invest": "Invest",
+    "providers": "Providers",
+    "pricing": "Subscription",
+    "login": "Log in",
+    "register": "Create account",
+    "dashboard": "Dashboard",
+    "designSystem": "Design system"
+  },
+  "home": {
+    "heroEyebrow": "MUZZUP",
+    "heroTitle": "The 100% Halal business marketplace",
+    "heroTagline": "Verified according to Sharia principles",
+    "heroSubtitle": "Amazon FBA, Shopify, SaaS and content businesses, human-audited against strict Sharia criteria. AI prepares, our experts validate.",
+    "ctaPrimary": "Estimate my business",
+    "ctaSecondary": "Explore listings",
+    "trustBadge": "Sharia Verified",
+    "spaces": {
+      "buy": { "title": "Buy", "description": "Find a profitable, audited, ready-to-run business." },
+      "finance": { "title": "Finance", "description": "Structure an acquisition without non-compliant financing." },
+      "invest": { "title": "Invest", "description": "Take a stake in a growing business." }
+    }
+  },
+  "designSystem": {
+    "title": "Design system — Midnight Trust",
+    "subtitle": "Components, tokens and visual signature of the MUZZUP platform.",
+    "sections": {
+      "colors": "Palette",
+      "typography": "Typography",
+      "buttons": "Buttons",
+      "badges": "Badges",
+      "cards": "Cards & glassmorphism",
+      "financials": "Locked financial data",
+      "forms": "Form fields",
+      "motion": "Motion",
+      "theme": "Light / dark theme"
+    }
+  },
+  "footer": {
+    "tagline": "Trust is the product.",
+    "rights": "All rights reserved."
+  }
+}
