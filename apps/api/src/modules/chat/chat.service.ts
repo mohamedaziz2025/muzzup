@@ -57,11 +57,33 @@ export const chatService = {
     return conversation;
   },
 
-  listForUser(userId: string) {
-    return ConversationModel.find({ participantIds: userId })
+  async listForUser(userId: string) {
+    const conversations = await ConversationModel.find({ participantIds: userId })
       .sort({ updatedAt: -1 })
       .populate("listingId", "title type")
       .exec();
+
+    const pendingRequests = await RevealRequestModel.find({
+      conversationId: { $in: conversations.map((c) => c._id) },
+      status: "pending",
+    }).exec();
+    const pendingByConversation = new Map(
+      pendingRequests.map((r) => [r.conversationId.toString(), r]),
+    );
+
+    return conversations.map((conversation) => {
+      const pending = pendingByConversation.get(conversation._id.toString());
+      return {
+        ...conversation.toObject(),
+        pendingRevealRequest: pending
+          ? {
+              id: pending._id.toString(),
+              targetPhase: pending.targetPhase,
+              requestedBy: pending.requestedBy.toString(),
+            }
+          : null,
+      };
+    });
   },
 
   async assertParticipant(conversationId: string, userId: string): Promise<ConversationDocument> {

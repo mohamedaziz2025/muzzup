@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { LayoutDashboard, Heart, CreditCard, User as UserIcon } from "lucide-react";
+import { useRef, useState } from "react";
+import { LayoutDashboard, Heart, CreditCard, User as UserIcon, Camera } from "lucide-react";
 import type { MemberCapacity } from "@muzzap/shared";
 import { useAuthStore } from "@/stores/auth-store";
-import { useUpdateProfile } from "@/lib/hooks/use-profile";
+import { useUpdateProfile, useUploadAvatar } from "@/lib/hooks/use-profile";
 import { DashboardSidebarShell, type SidebarItem } from "@/components/dashboard/sidebar-shell";
 import { Card, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Avatar } from "@/components/ui/avatar";
 import { Input, Label } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -36,11 +37,17 @@ const ROLE_LABELS: Record<string, string> = {
 export default function ProfilePage() {
   const user = useAuthStore((s) => s.user);
   const updateProfile = useUpdateProfile();
+  const uploadAvatar = useUploadAvatar();
+  const avatarInputRef = useRef<HTMLInputElement>(null);
   const [fullName, setFullName] = useState(user?.fullName ?? "");
   const [capacities, setCapacities] = useState<MemberCapacity[]>(user?.capacities ?? []);
   const [saved, setSaved] = useState(false);
 
   if (!user) return null;
+
+  function handleAvatarChange(file: File | undefined) {
+    if (file) uploadAvatar.mutate(file);
+  }
 
   function toggleCapacity(value: MemberCapacity) {
     setCapacities((prev) => (prev.includes(value) ? prev.filter((c) => c !== value) : [...prev, value]));
@@ -61,9 +68,28 @@ export default function ProfilePage() {
 
       <Card className="mt-8 max-w-xl">
         <div className="flex items-center gap-4">
-          <span className="flex size-16 items-center justify-center rounded-full bg-elevated font-display text-2xl font-bold text-cyan">
-            {user.fullName.slice(0, 1).toUpperCase()}
-          </span>
+          <button
+            type="button"
+            onClick={() => avatarInputRef.current?.click()}
+            disabled={uploadAvatar.isPending}
+            className="group relative shrink-0 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan"
+            aria-label="Changer la photo de profil"
+          >
+            <Avatar name={user.fullName} src={user.avatarUrl} size="lg" />
+            <span className="absolute inset-0 flex items-center justify-center rounded-full bg-abyss/60 opacity-0 transition-opacity group-hover:opacity-100">
+              <Camera className="size-5 text-white" />
+            </span>
+            <input
+              ref={avatarInputRef}
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              className="hidden"
+              onChange={(e) => {
+                handleAvatarChange(e.target.files?.[0]);
+                e.target.value = "";
+              }}
+            />
+          </button>
           <div>
             <CardTitle>{user.fullName}</CardTitle>
             <CardDescription className="mt-1">{user.pseudonym}</CardDescription>
@@ -76,6 +102,9 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
+        {uploadAvatar.error && (
+          <p className="mt-2 text-sm text-danger">Échec de l&apos;envoi de la photo, réessayez.</p>
+        )}
 
         <div className="mt-6 space-y-4">
           <div>

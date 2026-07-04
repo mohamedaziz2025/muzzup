@@ -22,6 +22,7 @@ export interface Conversation {
   lastMessageAt: string | null;
   lastMessageSenderId: string | null;
   updatedAt: string;
+  pendingRevealRequest: { id: string; targetPhase: RevealPhase; requestedBy: string } | null;
 }
 
 export function useConversations() {
@@ -59,6 +60,18 @@ export function useProposeReveal(conversationId: string) {
       apiFetch(`/chat/conversations/${conversationId}/reveal-requests`, {
         method: "POST",
         body: { targetPhase },
+      }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["chat", "conversations"] }),
+  });
+}
+
+export function useRespondReveal(requestId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (accept: boolean) =>
+      apiFetch(`/chat/reveal-requests/${requestId}/respond`, {
+        method: "POST",
+        body: { accept },
       }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["chat", "conversations"] }),
   });

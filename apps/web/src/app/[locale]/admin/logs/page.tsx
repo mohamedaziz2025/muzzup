@@ -58,6 +58,7 @@ function AdminLogsContent() {
           <Input
             type="date"
             value={from}
+            max={to || undefined}
             onChange={(e) => {
               setFrom(e.target.value);
               setPage(1);
@@ -69,6 +70,8 @@ function AdminLogsContent() {
           <Input
             type="date"
             value={to}
+            min={from || undefined}
+            max={new Date().toISOString().slice(0, 10)}
             onChange={(e) => {
               setTo(e.target.value);
               setPage(1);

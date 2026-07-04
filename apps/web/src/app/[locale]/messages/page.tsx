@@ -11,6 +11,7 @@ import {
   useConversations,
   useMessages,
   useProposeReveal,
+  useRespondReveal,
   useRequestNda,
   type ChatMessage,
   type Conversation,
@@ -107,6 +108,8 @@ function ConversationPanel({ conversation }: { conversation: Conversation }) {
   const [draft, setDraft] = useState("");
   const proposeReveal = useProposeReveal(conversationId);
   const requestNda = useRequestNda(conversationId);
+  const pendingReveal = conversation.pendingRevealRequest;
+  const respondReveal = useRespondReveal(pendingReveal?.id ?? "");
   const queryClient = useQueryClient();
   const bottomRef = useRef<HTMLDivElement>(null);
   const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -141,11 +144,15 @@ function ConversationPanel({ conversation }: { conversation: Conversation }) {
     const onRevealResolved = () => {
       queryClient.invalidateQueries({ queryKey: ["chat", "conversations"] });
     };
+    const onRevealRequested = () => {
+      queryClient.invalidateQueries({ queryKey: ["chat", "conversations"] });
+    };
 
     socket.on("message:new", onNewMessage);
     socket.on("message:read", onRead);
     socket.on("typing", onTyping);
     socket.on("reveal:resolved", onRevealResolved);
+    socket.on("reveal:requested", onRevealRequested);
 
     return () => {
       socket.emit("conversation:leave", conversationId);
@@ -153,6 +160,7 @@ function ConversationPanel({ conversation }: { conversation: Conversation }) {
       socket.off("message:read", onRead);
       socket.off("typing", onTyping);
       socket.off("reveal:resolved", onRevealResolved);
+      socket.off("reveal:requested", onRevealRequested);
     };
   }, [accessToken, conversationId, queryClient, user?.id]);
 
@@ -205,7 +213,7 @@ function ConversationPanel({ conversation }: { conversation: Conversation }) {
           </div>
         </div>
         <div className="flex gap-2">
-          {target && (
+          {target && !pendingReveal && (
             <Button
               size="sm"
               variant="secondary"
@@ -215,6 +223,11 @@ function ConversationPanel({ conversation }: { conversation: Conversation }) {
               Proposer : {REVEAL_LABELS[target]}
             </Button>
           )}
+          {pendingReveal && pendingReveal.requestedBy === user?.id && (
+            <span className="flex items-center rounded-full bg-elevated px-3 py-1.5 text-xs text-muted">
+              En attente de réponse : {REVEAL_LABELS[pendingReveal.targetPhase]}
+            </span>
+          )}
           {!conversation.ndaId && (
             <Button size="sm" variant="gold" disabled={requestNda.isPending} onClick={() => requestNda.mutate()}>
               NDA
@@ -222,6 +235,27 @@ function ConversationPanel({ conversation }: { conversation: Conversation }) {
           )}
         </div>
       </div>
+
+      {pendingReveal && pendingReveal.requestedBy !== user?.id && (
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--border-subtle)] bg-elevated px-5 py-2.5 text-sm">
+          <p className="text-primary">
+            Votre interlocuteur propose de passer à : <strong>{REVEAL_LABELS[pendingReveal.targetPhase]}</strong>
+          </p>
+          <div className="flex gap-2">
+            <Button
+              size="sm"
+              variant="secondary"
+              disabled={respondReveal.isPending}
+              onClick={() => respondReveal.mutate(false)}
+            >
+              Refuser
+            </Button>
+            <Button size="sm" disabled={respondReveal.isPending} onClick={() => respondReveal.mutate(true)}>
+              Accepter
+            </Button>
+          </div>
+        </div>
+      )}
 
       <div className="flex-1 space-y-2 overflow-y-auto px-5 py-4">
         {allMessages.map((msg) => (

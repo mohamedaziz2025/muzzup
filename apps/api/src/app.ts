@@ -1,3 +1,4 @@
+import { join } from "node:path";
 import express from "express";
 import helmet from "helmet";
 import cors from "cors";
@@ -62,6 +63,8 @@ export function createApp(): express.Express {
     }),
   );
   app.use(globalRateLimiter);
+
+  app.use("/uploads", express.static(join(process.cwd(), "uploads")));
 
   app.use("/api/v1", apiV1Router);
 

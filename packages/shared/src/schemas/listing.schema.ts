@@ -16,7 +16,9 @@ export const listingDraftSchema = z.object({
   title: z.string().trim().min(10).max(140),
   summary: z.string().trim().min(50).max(1000),
   sector: z.string().trim().min(2).max(80),
-  foundedAt: z.coerce.date(),
+  foundedAt: z.coerce.date().refine((date) => date <= new Date(), {
+    message: "La date de création ne peut pas être dans le futur",
+  }),
   acquisitionChannels: z.array(z.enum(ACQUISITION_CHANNELS)).min(1),
   financials: listingFinancialsSchema,
   halalSelfChecklist: z.record(z.string(), z.boolean()),

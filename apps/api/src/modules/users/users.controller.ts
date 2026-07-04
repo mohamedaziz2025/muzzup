@@ -3,6 +3,7 @@ import type { UpdateProfileInput, DeleteAccountInput } from "@muzzap/shared";
 import { usersService } from "./users.service.js";
 import { toUserPublic } from "./users.mapper.js";
 import { clearRefreshCookie } from "../../lib/cookies.js";
+import { BadRequestError } from "../../lib/errors.js";
 
 export const usersController = {
   async me(req: Request, res: Response) {
@@ -12,6 +13,15 @@ export const usersController = {
 
   async updateMe(req: Request, res: Response) {
     const user = await usersService.updateProfile(req.auth!.userId, req.body as UpdateProfileInput);
+    res.status(200).json({ success: true, data: { user: toUserPublic(user) } });
+  },
+
+  async uploadAvatar(req: Request, res: Response) {
+    if (!req.file) throw new BadRequestError("Aucun fichier reçu");
+    const user = await usersService.updateAvatar(req.auth!.userId, {
+      buffer: req.file.buffer,
+      mimetype: req.file.mimetype,
+    });
     res.status(200).json({ success: true, data: { user: toUserPublic(user) } });
   },
 

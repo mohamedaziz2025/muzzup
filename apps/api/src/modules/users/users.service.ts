@@ -2,8 +2,16 @@ import { randomUUID } from "node:crypto";
 import { UserModel } from "../../models/user.model.js";
 import { AuditLogModel } from "../../models/audit-log.model.js";
 import { verifyPassword, hashPassword } from "../../lib/password.js";
-import { NotFoundError, UnauthorizedError } from "../../lib/errors.js";
+import { storageProvider } from "../../lib/providers/storage-provider.js";
+import { env } from "../../config/env.js";
+import { NotFoundError, UnauthorizedError, BadRequestError } from "../../lib/errors.js";
 import type { UpdateProfileInput } from "@muzzap/shared";
+
+const ALLOWED_AVATAR_MIME_TYPES: Record<string, string> = {
+  "image/png": "png",
+  "image/jpeg": "jpg",
+  "image/webp": "webp",
+};
 
 export const usersService = {
   async getById(userId: string) {
@@ -18,6 +26,21 @@ export const usersService = {
     if (input.fullName) user.fullName = input.fullName;
     if (input.locale) user.locale = input.locale;
     if (input.capacities) user.capacities = input.capacities;
+    await user.save();
+    return user;
+  },
+
+  async updateAvatar(userId: string, file: { buffer: Buffer; mimetype: string }) {
+    const extension = ALLOWED_AVATAR_MIME_TYPES[file.mimetype];
+    if (!extension) throw new BadRequestError("Format d'image non supporté (PNG, JPEG ou WebP requis)");
+
+    const user = await UserModel.findById(userId).exec();
+    if (!user) throw new NotFoundError("Utilisateur introuvable");
+
+    const storageKey = `avatars/${userId}-${Date.now()}.${extension}`;
+    await storageProvider.putObject(storageKey, file.buffer, file.mimetype);
+
+    user.avatarUrl = `${env.API_URL}/uploads/${storageKey}`;
     await user.save();
     return user;
   },

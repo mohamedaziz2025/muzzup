@@ -176,6 +176,8 @@ export default function SellListingPage() {
                   type="date"
                   value={foundedAt}
                   onChange={(e) => setFoundedAt(e.target.value)}
+                  min="1900-01-01"
+                  max={new Date().toISOString().slice(0, 10)}
                 />
               </div>
             </div>

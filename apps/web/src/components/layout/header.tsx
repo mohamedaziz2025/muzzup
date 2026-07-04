@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { Bell, MessageCircle, Plus, Menu, X } from "lucide-react";
 import { Link, useRouter } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
+import { Avatar } from "@/components/ui/avatar";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Logo } from "@/components/brand/logo";
 import { useAuthStore } from "@/stores/auth-store";
@@ -118,9 +119,7 @@ function UserMenu() {
         onClick={() => setOpen((v) => !v)}
         className="flex items-center gap-2 rounded-full border border-[var(--border-subtle)] py-1 pl-1 pr-3 transition-colors hover:border-royal/40"
       >
-        <span className="flex size-7 items-center justify-center rounded-full bg-elevated font-display text-xs font-semibold text-cyan">
-          {user.fullName.slice(0, 1).toUpperCase()}
-        </span>
+        <Avatar name={user.fullName} src={user.avatarUrl} size="sm" className="size-7 text-xs" />
         <span className="hidden text-sm text-secondary sm:inline">{user.fullName.split(" ")[0]}</span>
       </button>
       <AnimatePresence>
