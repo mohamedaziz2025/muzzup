@@ -38,6 +38,37 @@ services:
       timeout: 5s
       retries: 20
 
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - ./apps/api/.env
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/muzzap?replicaSet=rs0
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "4000:4000"
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_started
+    env_file:
+      - ./apps/web/.env
+    ports:
+      - "3000:3000"
+
 volumes:
   mongo_data:
   redis_data:
