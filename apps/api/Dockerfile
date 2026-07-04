@@ -12,7 +12,7 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN pnpm --filter @muzzap/api build
+RUN pnpm exec turbo run build --filter=@muzzap/api
 
 EXPOSE 4000
 
